@@ -205,7 +205,7 @@ window.onLogHandler = (...args) => {
     }
 }
 
-setInterval(function () {
+setInterval(() => {
     // Forces the chat input to disable zoom (Zoom causes issues with auto scrolling down on new message). Also need to change the portals that apply to the ChatFrame
     for (let v of [
         ...document.getElementsByClassName('ChatFrame-Root'),
@@ -226,7 +226,7 @@ setInterval(function () {
     if (a) {
         a.onblur = () => {
             if (countInputs().length === 1) {
-                document.getElementById('chatPanelInput').focus()
+                document.getElementById('chatPanelInput')?.focus()
             }
         }
     }
