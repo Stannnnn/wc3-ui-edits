@@ -1,0 +1,19 @@
+{
+    "name": "wc3-ui-edits",
+    "version": "1.0.0",
+    "description": "wc3-ui-edits",
+    "main": "prettier.config.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Stannnnn/wc3-ui-edits.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Stannnnn/wc3-ui-edits/issues"
+    },
+    "homepage": "https://github.com/Stannnnn/wc3-ui-edits#readme",
+    "devDependencies": {
+        "uglify-js": "^3.17.4"
+    }
+}

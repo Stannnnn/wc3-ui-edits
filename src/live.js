@@ -67,6 +67,10 @@ let sockets = []
     }
 }
 
+const countInputs = () => {
+    return Array.from(document.getElementsByTagName('input')).filter(e => !e.classList.contains('chat_focus_ignore'))
+}
+
 setInterval(function () {
     // Forces the chat input to disable zoom (Zoom causes issues with auto scrolling down on new message). Also need to change the portals that apply to the ChatFrame
     for (let v of [
@@ -77,12 +81,6 @@ setInterval(function () {
     }
 
     // Forces the chat input to stay focused
-    const countInputs = () => {
-        return Array.from(document.getElementsByTagName('input')).filter(
-            e => !e.classList.contains('chat_focus_ignore')
-        )
-    }
-
     let a = document.getElementById('chatPanelInput')
 
     if (a) {
