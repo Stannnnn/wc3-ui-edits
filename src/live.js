@@ -3,11 +3,18 @@ const initMain = () => {
 
     // Override defaults so we can add our hooks
     {
-        const nativeWebSocket = window.WebSocket
-        window.WebSocket = function (...args) {
-            const socket = new nativeWebSocket(...args)
-            sockets.push(socket)
-            return socket
+        // Doesn't work with W3C
+        // const nativeWebSocket = window.WebSocket
+        // window.WebSocket = function (...args) {
+        //     const socket = new nativeWebSocket(...args)
+        //     sockets.push(socket)
+        //     return socket
+        // }
+
+        const originalSend = WebSocket.prototype.send
+        WebSocket.prototype.send = function (...args) {
+            if (sockets.indexOf(this) === -1) sockets.push(this)
+            return originalSend.call(this, ...args)
         }
     }
 
@@ -22,6 +29,29 @@ const initMain = () => {
 
         const friendGameActivityState = {}
 
+        const handleFriendActivity = friend => {
+            const currentGame = friend.localRichPresenceAttributes?.find(a => a.key === 'currentGameName')
+
+            if (currentGame?.value && currentGame.value !== friendGameActivityState[friend.battleTag]) {
+                friendGameActivityState[friend.battleTag] = currentGame?.value
+
+                sockets[0].onmessage({
+                    data: JSON.stringify({
+                        messageType: 'ChatMessage',
+                        payload: {
+                            message: {
+                                content: `Your friend ${friend.battleTag} entered a game called ${currentGame.value}`,
+                                type: 'message',
+                                sender: '',
+                            },
+                        },
+                    }),
+                })
+            }
+
+            friendGameActivityState[friend.battleTag] = currentGame?.value
+        }
+
         const initWebsocketHooks = () => {
             try {
                 const orig = sockets[0].onmessage
@@ -33,31 +63,12 @@ const initMain = () => {
 
                         switch (e?.messageType) {
                             case 'FriendsFriendUpdated': {
-                                const currentGame = e.payload.data.friend.localRichPresenceAttributes?.find(
-                                    a => a.key === 'currentGameName'
-                                )
+                                handleFriendActivity(e.payload.data.friend)
+                                break
+                            }
 
-                                if (
-                                    currentGame?.value &&
-                                    currentGame.value !== friendGameActivityState[e.payload.data.friend.battleTag]
-                                ) {
-                                    friendGameActivityState[e.payload.data.friend.battleTag] = currentGame?.value
-
-                                    sockets[0].onmessage({
-                                        data: JSON.stringify({
-                                            messageType: 'ChatMessage',
-                                            payload: {
-                                                message: {
-                                                    content: `Your friend ${e.payload.data.friend.battleTag} entered a Warcraft III The Frozen Throne game called ${currentGame.value}`,
-                                                    type: 'message',
-                                                    sender: '',
-                                                },
-                                            },
-                                        }),
-                                    })
-                                }
-
-                                friendGameActivityState[e.payload.data.friend.battleTag] = currentGame?.value
+                            case 'FriendsFriendData': {
+                                e.payload.data.friends.forEach(friend => handleFriendActivity(friend))
                                 break
                             }
                         }

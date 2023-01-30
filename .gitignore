@@ -1,3 +1,4 @@
 deploy.sh
 dist
 node_modules
+log
