@@ -59,3 +59,21 @@ If you've used W3Champions or another mod before you're done. If you haven't the
 
 -   A more detailed explanation can be found here: https://www.hiveworkshop.com/threads/local-files.330849/
 -   If these solutions are too difficult then you can also just install W3Champions and have their installer do the work (:
+
+\
+\
+\
+
+## Optional - Disabling certain edits; Aka; Waaah I can't read the chat 👓🔍
+
+To disable the chatScroll fix that causes the chat to change in size change the url to:
+
+```
+<script src="https://w3replayers.com/wc3-ui-edits.js?chatScroll=false"></script>
+```
+
+You have full control with:
+
+```
+<script src="https://w3replayers.com/wc3-ui-edits.js?friends=true&chatFocus=true&chatScroll=true"></script>
+```

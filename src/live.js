@@ -1,4 +1,18 @@
 const initMain = () => {
+    const scriptSrc = Array.from(document.getElementsByTagName('script')).find(s =>
+        s.src.includes('wc3-ui-edits.js')
+    )?.src
+
+    const searchParams = new URLSearchParams(scriptSrc.substring(scriptSrc.indexOf('?')))
+
+    const isEnabled = s => !['false', 'off', 'no', '0'].includes(s?.toLowerCase())
+
+    const fixesEnabled = {
+        friends: isEnabled(searchParams.get('friends')),
+        chatFocus: isEnabled(searchParams.get('chatFocus')),
+        chatScroll: isEnabled(searchParams.get('chatScroll')),
+    }
+
     const sockets = []
 
     // Override defaults so we can add our hooks
@@ -35,18 +49,20 @@ const initMain = () => {
             if (currentGame?.value && currentGame.value !== friendGameActivityState[friend.battleTag]) {
                 friendGameActivityState[friend.battleTag] = currentGame?.value
 
-                sockets[0].onmessage({
-                    data: JSON.stringify({
-                        messageType: 'ChatMessage',
-                        payload: {
-                            message: {
-                                content: `Your friend ${friend.battleTag} entered a game called ${currentGame.value}`,
-                                type: 'message',
-                                sender: '',
+                if (fixesEnabled.friends) {
+                    sockets[0].onmessage({
+                        data: JSON.stringify({
+                            messageType: 'ChatMessage',
+                            payload: {
+                                message: {
+                                    content: `Your friend ${friend.battleTag} entered a game called ${currentGame.value}`,
+                                    type: 'message',
+                                    sender: '',
+                                },
                             },
-                        },
-                    }),
-                })
+                        }),
+                    })
+                }
             }
 
             friendGameActivityState[friend.battleTag] = currentGame?.value
@@ -89,21 +105,25 @@ const initMain = () => {
     }
 
     setInterval(() => {
-        // Forces the chat input to disable zoom (Zoom causes issues with auto scrolling down on new message). Also need to change the portals that apply to the ChatFrame
-        for (const v of [
-            ...document.getElementsByClassName('ChatFrame-Root'),
-            ...document.getElementsByClassName('PlayerList-PopupMenu'),
-        ]) {
-            v.style.zoom = 'unset'
+        if (fixesEnabled.chatScroll) {
+            // Forces the chat input to disable zoom (Zoom causes issues with auto scrolling down on new message). Also need to change the portals that apply to the ChatFrame
+            for (const v of [
+                ...document.getElementsByClassName('ChatFrame-Root'),
+                ...document.getElementsByClassName('PlayerList-PopupMenu'),
+            ]) {
+                v.style.zoom = 'unset'
+            }
         }
 
-        // Forces the chat input to stay focused
-        const a = document.getElementById('chatPanelInput')
+        if (fixesEnabled.chatFocus) {
+            // Forces the chat input to stay focused
+            const a = document.getElementById('chatPanelInput')
 
-        if (a) {
-            a.onblur = () => {
-                if (countInputs().length === 1) {
-                    document.getElementById('chatPanelInput')?.focus()
+            if (a) {
+                a.onblur = () => {
+                    if (countInputs().length === 1) {
+                        document.getElementById('chatPanelInput')?.focus()
+                    }
                 }
             }
         }
