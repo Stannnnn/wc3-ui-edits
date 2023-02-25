@@ -2,7 +2,7 @@
 
 -   Prevents the main chat input from losing focus when players join your lobby or switch slots.
 -   Fixes a bug where your chat history doesn't automatically scroll down. (This might cause your chat to look bigger/smaller than before)
--   Adds back the `Your friend FRIEND entered a Warcraft III The Frozen Throne game called GAME` messages. (Does not always work, Blizzard doesn't always tell us when friends join a game)
+-   Adds back the `Your friend FRIEND entered a game called GAME` messages. (Does not always work, Blizzard doesn't always tell us when friends join a game)
 
 ## Installation
 
@@ -64,7 +64,7 @@ If you've used W3Champions or another mod before you're done. If you haven't the
 \
 \
 
-## Optional - Disabling certain edits; Aka; Waaah I can't read the chat 👓🔍
+## Optional - Disabling certain edits
 
 To disable the chatScroll fix that causes the chat to change in size change the url to:
 
