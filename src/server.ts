@@ -9,6 +9,7 @@ app.use(cors())
 app.use(express.json({ limit: 52428800 }))
 
 app.get('/wc3-ui-edits.js', (req, res) => {
+    res.setHeader('Content-Type', 'application/javascript')
     res.send(readFileSync(__dirname + '/dev.js'))
 })
 

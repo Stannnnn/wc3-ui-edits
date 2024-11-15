@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "wc3-ui-edits",
     "main": "prettier.config.js",
+    "packageManager": "yarn@1.22.22",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Stannnnn/wc3-ui-edits.git"
