@@ -1,45 +1,15 @@
+import copy from 'copy-to-clipboard'
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
+import { LogsContainer } from './LogsContainer'
 import { dragElement } from './simpleDrag'
 
 export const App = () => {
-    const [logs, setLogs] = useState<string[]>([])
     const debugRef = useRef<HTMLDivElement>(null)
     const dragRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-        const onLogHandler = (...args: string[]) => {
-            let logCalls = logs
-            logCalls.unshift(...args)
-            logCalls = logCalls.slice(0, 500)
-
-            // sockets[0].onmessage({
-            //     data: JSON.stringify({
-            //         messageType: 'ChatMessage',
-            //         payload: {
-            //             message: {
-            //                 auroraId: 2,
-            //                 channelId: '1717403302-1575413517-6996',
-            //                 channelName: 'stormwind',
-            //                 channelNumber: 2,
-            //                 content: 'bacon is my guide',
-            //                 sender: 'JoeyJoeJoe#1563',
-            //                 source: 1,
-            //                 type: 'message',
-            //             },
-            //         },
-            //     }),
-            // })
-
-            setLogs([location.href, ...logCalls])
-        }
-
-        const origLogg = window.console.log
-        window.console.log = (...args) => {
-            origLogg('log', ...args)
-            onLogHandler?.(...args)
-        }
-    }, [])
+    const [appVisible, setAppVisible] = useState(false)
+    const [message, setMessage] = useState('')
 
     useEffect(() => {
         if (debugRef.current && dragRef.current) {
@@ -47,14 +17,59 @@ export const App = () => {
         }
     }, [])
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === '`') {
+                e.preventDefault()
+
+                setAppVisible(!appVisible)
+            }
+        }
+
+        window.addEventListener('keydown', handleKeyDown)
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown)
+        }
+    })
+
     return (
         <>
-            <div className="debugWindow" ref={debugRef}>
-                <div className="header" ref={dragRef}></div>
-                {logs.map((log, index) => (
-                    <div key={index}>{JSON.stringify(log)}</div>
-                ))}
-            </div>
+            {appVisible && (
+                <div className="debugWindow" ref={debugRef}>
+                    <div
+                        className="header"
+                        ref={dragRef}
+                        onClick={() => {
+                            copy(location.href)
+                        }}
+                    >
+                        {location.href}
+                    </div>
+
+                    <LogsContainer />
+
+                    <input
+                        className="message"
+                        type="text"
+                        value={message}
+                        onChange={e => setMessage(e.target.value)}
+                        onKeyDown={e => {
+                            if (e.key === 'Enter' && message.trim()) {
+                                console.info(message)
+
+                                try {
+                                    eval(message)
+                                } catch (e) {
+                                    console.error(e)
+                                }
+
+                                setMessage('')
+                            }
+                        }}
+                    />
+                </div>
+            )}
         </>
     )
 }
@@ -65,9 +80,9 @@ const initMain = () => {
     }
 
     // Override defaults so we can add our hooks
-    let sockets: WebSocket[] = []
+    const sockets: WebSocket[] = []
+
     {
-        sockets = []
         // const nativeWebSocket = window.WebSocket
         // window.WebSocket = function (...args) {
         //     const socket = new nativeWebSocket(...args)
@@ -77,6 +92,11 @@ const initMain = () => {
 
         const originalSend = WebSocket.prototype.send
         WebSocket.prototype.send = function (...args) {
+            // Ignore Vite
+            if (this.url.includes(':5173')) {
+                return
+            }
+
             if (sockets.indexOf(this) === -1) sockets.push(this)
             return originalSend.call(this, ...args)
         }
@@ -95,7 +115,7 @@ const initMain = () => {
             }
         }, 1000)
 
-        const friendGameActivityState: any = {}
+        const friendGameActivityState: { [x: string]: string } = {}
 
         const handleFriendActivity = (friend: any) => {
             const currentGame = friend.localRichPresenceAttributes?.find((a: any) => a.key === 'currentGameName')
@@ -128,16 +148,6 @@ const initMain = () => {
                 orig?.(...args)
 
                 let e = JSON.parse(args?.[0]?.data)
-
-                try {
-                    await fetch('http://localhost:8080/postMessage', {
-                        method: 'post',
-                        body: JSON.stringify(e),
-                        headers: { 'Content-Type': 'application/json' },
-                    })
-                } catch (e) {
-                    console.error(e)
-                }
 
                 switch (e?.messageType) {
                     case 'FriendsFriendUpdated': {
