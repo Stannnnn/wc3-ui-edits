@@ -1,0 +1,33 @@
+input {
+    box-sizing: border-box;
+}
+
+.debugWindow {
+    z-index: 100000000;
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    top: 100px;
+    left: 100px;
+}
+
+.debugWindow .header {
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    height: 20px;
+}
+
+.debugWindow .body {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    resize: both;
+    background-color: gray;
+}
+
+.debugWindow .message {
+    width: 100%;
+    color: black !important;
+}
