@@ -18,6 +18,7 @@ Replace:
 with:
 
 ```
+<div id="root-edits"></div>
 <script src="https://w3replayers.com/wc3-ui-edits/assets/index.js"></script>
 <link rel="stylesheet" href="https://w3replayers.com/wc3-ui-edits/assets/index.css" />
 <script defer src="GlueManager.js"></script>
@@ -42,3 +43,20 @@ If you've used W3Champions or another mod before you're done. If you haven't the
 
 -   A more detailed explanation can be found here: https://www.hiveworkshop.com/threads/local-files.330849/
 -   If these solutions are too difficult then you can also just install W3Champions and have their installer do the work (:
+
+### For development:
+
+```
+<div id="root-edits"></div>
+<script type="module">
+    import RefreshRuntime from "http://localhost:5173/@react-refresh";
+    RefreshRuntime.injectIntoGlobalHook(window);
+    window.$RefreshReg$ = () => {};
+    window.$RefreshSig$ = () => (type) => type;
+    window.__vite_plugin_react_preamble_installed__ = true;
+</script>
+<script type="module" src="http://localhost:5173/@vite/client"></script>
+<script type="module" src="http://localhost:5173/src/main.tsx"></script>
+<script defer src="GlueManager.js"></script>
+<script defer src="https://ingame-addon.w3champions.com/w3champions.js"></script>
+```
