@@ -1,0 +1,19 @@
+.debugWindow {
+    z-index: 100000000;
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    resize: both;
+    overflow: scroll;
+    background-color: gray;
+    top: 100px;
+    left: 100px;
+}
+
+.debugWindow .header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+}
