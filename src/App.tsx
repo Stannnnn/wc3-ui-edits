@@ -74,6 +74,16 @@ export const App = () => {
     )
 }
 
+// Copy this for testing
+// sockets[0].onmessage({
+//     data: JSON.stringify({
+//         messageType: 'SetGlueScreen',
+//         payload: {
+//             screen: 'GAME_LOBBY',
+//         },
+//     }),
+// })
+
 const initMain = () => {
     const fixesEnabled = {
         friends: true,
@@ -81,6 +91,9 @@ const initMain = () => {
 
     // Override defaults so we can add our hooks
     const sockets: WebSocket[] = []
+
+    // For debugging
+    ;(window as any).sockets = sockets
 
     {
         // const nativeWebSocket = window.WebSocket

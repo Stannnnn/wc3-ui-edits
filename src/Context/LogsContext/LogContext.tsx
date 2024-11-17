@@ -18,10 +18,13 @@ const useInitialState = () => {
                     setIsScrolledToBottom(ref.current.scrollHeight - ref.current.scrollTop === ref.current.clientHeight)
                 }
 
-                return setLogs(currLogs => [...currLogs, log])
+                const limit = 800
+
+                return setLogs(currLogs => {
+                    return [...currLogs.slice(-(limit - 1)), log]
+                })
             },
-            false,
-            200
+            false
         )
 
         return () => {

@@ -31,3 +31,72 @@ input {
     width: 100%;
     color: black !important;
 }
+
+/* Fix gamelist table */
+div,
+span {
+    word-break: break-all !important;
+}
+
+/* Gamelist screen, hide bottom right player div */
+.CustomGames .ImgDetails-ButtonContainer {
+    display: none !important;
+}
+
+.CustomGames .ImgDetailsLowerDivider {
+    display: none !important;
+}
+
+/* Channel screen, hide bottom right player div */
+.Multiplayer-Landing .Bottom-ChatList-Divider {
+    display: none !important;
+}
+
+.Multiplayer-Landing .Party-Actions-Container {
+    display: none !important;
+}
+
+.Multiplayer-Landing .SearchingForGame-Container {
+    display: none !important;
+}
+
+/* Channel screen; fill up the tabs so they overlap the bottom right player div */
+.Multiplayer-Landing .Tab-Panel {
+    height: 614px !important;
+}
+
+.Multiplayer-Landing .Tab-Panel .Tab-Panel-Scrollbar-Background-Frame {
+    height: 612px !important;
+}
+
+.Multiplayer-Landing .Tab-Panel .Clans-List-Scrollbar {
+    height: 612px !important;
+}
+
+.Multiplayer-Landing .Tab-Panel .Social-Vertical-FrameDivider {
+    height: 612px !important;
+}
+
+/* Hide player icon in chat message */
+.chatArea > .Player-Chat-Message {
+    height: 16px !important;
+    margin-top: 4px !important;
+}
+
+.chatArea > .Player-Chat-Message .Player-Icon-Wrapper {
+    display: none !important;
+}
+
+.chatArea > .Player-Chat-Message .PlayerTag div span {
+    display: inline-block;
+}
+
+.chatArea > .Player-Chat-Message .PlayerTag div .chatMessage {
+    display: inline-block;
+    margin-left: 4px;
+}
+
+.chatArea > .chatMessage {
+    margin-top: 4px !important;
+    margin-bottom: 0px !important;
+}
