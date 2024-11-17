@@ -60,3 +60,13 @@ If you've used W3Champions or another mod before you're done. If you haven't the
 <script defer src="GlueManager.js"></script>
 <script defer src="https://ingame-addon.w3champions.com/w3champions.js"></script>
 ```
+
+### For chii support:
+
+Run `yarn chii`
+
+And append this to the index.html:
+
+```
+<script src="http://localhost:8080/target.js"></script> -->
+```
