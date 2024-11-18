@@ -1,28 +1,16 @@
-import copy from 'copy-to-clipboard'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import Draggable from 'react-draggable'
 import './App.css'
-import { LogsContainer } from './LogsContainer'
-import { dragElement } from './simpleDrag'
 
 export const App = () => {
-    const debugRef = useRef<HTMLDivElement>(null)
-    const dragRef = useRef<HTMLDivElement>(null)
-
     const [appVisible, setAppVisible] = useState(false)
-    const [message, setMessage] = useState('')
-
-    useEffect(() => {
-        if (debugRef.current && dragRef.current) {
-            dragElement(debugRef.current, dragRef.current)
-        }
-    }, [])
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === '`') {
                 e.preventDefault()
 
-                setAppVisible(!appVisible)
+                setAppVisible(v => !v)
             }
         }
 
@@ -31,44 +19,28 @@ export const App = () => {
         return () => {
             window.removeEventListener('keydown', handleKeyDown)
         }
-    })
+    }, [])
 
     return (
         <>
             {appVisible && (
-                <div className="debugWindow" ref={debugRef}>
-                    <div
-                        className="header"
-                        ref={dragRef}
-                        onClick={() => {
-                            copy(location.href)
-                        }}
-                    >
-                        {location.href}
+                <Draggable
+                    bounds="#root"
+                    handle=".header"
+                    defaultPosition={{ x: 100, y: 100 }}
+                    // defaultPosition={getValue('headerPosition', { x: 100, y: 100 })}
+                    // onStop={(_e, data) => {
+                    //     setValue('headerPosition', { x: data.x, y: data.y })
+                    // }}
+                >
+                    <div className="debugWindow">
+                        <div className="header">wc3-ui-edits</div>
+
+                        <div className="body">
+                            <input type="checkbox" />
+                        </div>
                     </div>
-
-                    <LogsContainer />
-
-                    <input
-                        className="message"
-                        type="text"
-                        value={message}
-                        onChange={e => setMessage(e.target.value)}
-                        onKeyDown={e => {
-                            if (e.key === 'Enter' && message.trim()) {
-                                console.info(message)
-
-                                try {
-                                    eval(message)
-                                } catch (e) {
-                                    console.error(e)
-                                }
-
-                                setMessage('')
-                            }
-                        }}
-                    />
-                </div>
+                </Draggable>
             )}
         </>
     )
@@ -90,24 +62,17 @@ const initMain = () => {
     }
 
     // Override defaults so we can add our hooks
-    const sockets: WebSocket[] = []
+    const sockets: WebSocket[] = window.sockets || []
 
     // For debugging
-    ;(window as any).sockets = sockets
+    window.sockets = sockets
 
     {
-        // const nativeWebSocket = window.WebSocket
-        // window.WebSocket = function (...args) {
-        //     const socket = new nativeWebSocket(...args)
-        //     sockets.push(socket)
-        //     return socket
-        // }
-
         const originalSend = WebSocket.prototype.send
         WebSocket.prototype.send = function (...args) {
-            // Ignore Vite
-            if (this.url.includes(':5173')) {
-                return
+            // Ignore Vite and Chii
+            if (this.url.includes(':5173') || this.url.includes(':8080')) {
+                return originalSend.call(this, ...args)
             }
 
             if (sockets.indexOf(this) === -1) sockets.push(this)
