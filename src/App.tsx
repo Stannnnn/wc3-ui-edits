@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Draggable from 'react-draggable'
-import './App.css'
+import './App.scss'
 
 export const App = () => {
     const [appVisible, setAppVisible] = useState(false)
@@ -57,8 +57,32 @@ export const App = () => {
 // })
 
 const initMain = () => {
+    const scriptSrc =
+        Array.from(document.getElementsByTagName('script')).find(
+            s => s.src.includes('wc3-ui-edits/assets/index.js') || s.src.includes('src/main.tsx')
+        )?.src || ''
+
+    const searchParams = new URLSearchParams(scriptSrc.substring(scriptSrc.indexOf('?')))
+
+    const isEnabled = (s: string) => !['false', 'off', 'no', '0'].includes(s?.toLowerCase())
+
     const fixesEnabled = {
-        friends: true,
+        friends: isEnabled(searchParams.get('friends') || ''),
+        chat: isEnabled(searchParams.get('chat') || ''),
+        friendlist: isEnabled(searchParams.get('friendlist') || ''),
+        breakall: isEnabled(searchParams.get('breakall') || ''),
+    }
+
+    if (fixesEnabled.chat) {
+        document.getElementsByTagName('body')[0].classList.add('fix_chat')
+    }
+
+    if (fixesEnabled.friendlist) {
+        document.getElementsByTagName('body')[0].classList.add('fix_friendlist')
+    }
+
+    if (fixesEnabled.breakall) {
+        document.getElementsByTagName('body')[0].classList.add('fix_breakall')
     }
 
     // Override defaults so we can add our hooks
