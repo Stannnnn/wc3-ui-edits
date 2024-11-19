@@ -1,8 +1,4 @@
 #root-edits {
-    input {
-        box-sizing: border-box;
-    }
-
     .debugWindow {
         z-index: 100000000;
         position: absolute;
@@ -12,24 +8,14 @@
         left: 0;
     }
 
-    .debugWindow .header {
-        background-color: #333;
-        color: white;
-        cursor: pointer;
-        width: 100%;
-        height: 20px;
+    .Options-Container {
+        height: 460px !important;
     }
 
-    .debugWindow .body {
-        width: 100%;
-        height: 100%;
-        overflow-y: scroll;
-        background-color: gray;
-    }
-
-    .debugWindow .message {
-        width: 100%;
-        color: black !important;
+    .Options-Menu {
+        min-width: unset !important;
+        margin-left: 154px;
+        width: 400px;
     }
 }
 
