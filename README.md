@@ -35,7 +35,7 @@ with:
 To disable certain edits you'll have to use the url below and then change specific fixes to `false`
 
 ```
-<script src="https://w3replayers.com/wc3-ui-edits/assets/index.js?chat=true&friends=true&friendlist=true&breakall=true"></script>
+<script src="https://w3replayers.com/wc3-ui-edits/assets/index.js?chat=true&friends=true&friendlist=true&breakall=true&pausebg=false"></script>
 ```
 
 &nbsp;
