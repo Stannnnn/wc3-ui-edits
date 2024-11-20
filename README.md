@@ -8,7 +8,7 @@
 
 ## Installation
 
-1. Install or update W3Champions as they fix some registry settings required for this mod
+1. Install or update [W3Champions](https://w3champions.com/) as they fix some registry settings required for this mod
 2. Open: `C:\Program Files (x86)\Warcraft III\_retail_\webui\index.html` (Might be a little different on your computer)
 
 Replace:
