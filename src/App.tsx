@@ -44,13 +44,13 @@ export const App = () => {
         return !['false', 'off', 'no', '0'].includes(s?.toLowerCase())
     }
 
-    const fixesEnabled = {
+    const [fixesEnabled, setFixesEnabled] = useState({
         friends: isEnabled(searchParams.get('friends') || ''),
         chat: isEnabled(searchParams.get('chat') || ''),
         friendlist: isEnabled(searchParams.get('friendlist') || ''),
         breakall: isEnabled(searchParams.get('breakall') || ''),
         pausebg: isEnabled(searchParams.get('pausebg') || '', true),
-    }
+    })
 
     useEffect(() => {
         if (fixesEnabled.chat) {
@@ -164,8 +164,14 @@ export const App = () => {
                 .classList.remove('fix_chat', 'fix_friendlist', 'fix_breakall', 'fix_pausebg')
 
             document.removeEventListener('play', onPlayEvent, true)
+
+            const videoDiv: HTMLVideoElement | null = document.querySelector('video#BackgroundVideo')
+
+            if (videoDiv?.paused) {
+                videoDiv.play()
+            }
         }
-    }, [])
+    }, [fixesEnabled])
 
     return (
         <>
@@ -235,6 +241,12 @@ export const App = () => {
                                                                 className={`Checkbox-Button-${
                                                                     fixesEnabled.friends ? 'Checked' : 'Unchecked'
                                                                 }`}
+                                                                onClick={() => {
+                                                                    setFixesEnabled(f => ({
+                                                                        ...f,
+                                                                        friends: !f.friends,
+                                                                    }))
+                                                                }}
                                                             ></div>
                                                             <div className="Checkbox-Label undefined">Friends</div>
                                                         </div>
@@ -244,6 +256,12 @@ export const App = () => {
                                                                 className={`Checkbox-Button-${
                                                                     fixesEnabled.chat ? 'Checked' : 'Unchecked'
                                                                 }`}
+                                                                onClick={() => {
+                                                                    setFixesEnabled(f => ({
+                                                                        ...f,
+                                                                        chat: !f.chat,
+                                                                    }))
+                                                                }}
                                                             ></div>
                                                             <div className="Checkbox-Label undefined">Chat</div>
                                                         </div>
@@ -253,6 +271,12 @@ export const App = () => {
                                                                 className={`Checkbox-Button-${
                                                                     fixesEnabled.friendlist ? 'Checked' : 'Unchecked'
                                                                 }`}
+                                                                onClick={() => {
+                                                                    setFixesEnabled(f => ({
+                                                                        ...f,
+                                                                        friendlist: !f.friendlist,
+                                                                    }))
+                                                                }}
                                                             ></div>
                                                             <div className="Checkbox-Label undefined">Friendlist</div>
                                                         </div>
@@ -262,6 +286,12 @@ export const App = () => {
                                                                 className={`Checkbox-Button-${
                                                                     fixesEnabled.breakall ? 'Checked' : 'Unchecked'
                                                                 }`}
+                                                                onClick={() => {
+                                                                    setFixesEnabled(f => ({
+                                                                        ...f,
+                                                                        breakall: !f.breakall,
+                                                                    }))
+                                                                }}
                                                             ></div>
                                                             <div className="Checkbox-Label undefined">Break All</div>
                                                         </div>
@@ -271,6 +301,12 @@ export const App = () => {
                                                                 className={`Checkbox-Button-${
                                                                     fixesEnabled.pausebg ? 'Checked' : 'Unchecked'
                                                                 }`}
+                                                                onClick={() => {
+                                                                    setFixesEnabled(f => ({
+                                                                        ...f,
+                                                                        pausebg: !f.pausebg,
+                                                                    }))
+                                                                }}
                                                             ></div>
                                                             <div className="Checkbox-Label undefined">
                                                                 Pause Background Videos
@@ -278,8 +314,8 @@ export const App = () => {
                                                         </div>
 
                                                         <div>
-                                                            Unfortunately you can't change these settings directly in
-                                                            warcraft, see the github page for more info.
+                                                            Settings can't be saved directly in Warcraft. Edit the URL
+                                                            or check the GitHub page for details.
                                                         </div>
                                                     </div>
                                                 </div>

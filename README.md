@@ -5,6 +5,7 @@
 -   Hides the bottom right player div on the multiplayer screen to create more space for your friendlist
 -   Very basic gamelist table fix by forcing long words to break
 -   Press ` to see the current activated settings
+-   Optionally disable all background videos (FPS boost for Mac) (set pausebg=true)
 
 ## Installation
 
