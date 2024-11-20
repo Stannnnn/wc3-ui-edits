@@ -7,7 +7,8 @@ export const App = () => {
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === '`') {
+            // Fallback to keyCode for Dead keys
+            if (e.key === '`' || e.keyCode === 192) {
                 e.preventDefault()
 
                 setAppVisible(v => !v)
@@ -35,14 +36,20 @@ export const App = () => {
 
     const searchParams = new URLSearchParams(scriptSrc.substring(scriptSrc.indexOf('?')))
 
-    const isEnabled = (s: string) => !['false', 'off', 'no', '0'].includes(s?.toLowerCase())
+    const isEnabled = (s: string, defaultFalse?: boolean) => {
+        if (defaultFalse && !s) {
+            return false
+        }
+
+        return !['false', 'off', 'no', '0'].includes(s?.toLowerCase())
+    }
 
     const fixesEnabled = {
         friends: isEnabled(searchParams.get('friends') || ''),
         chat: isEnabled(searchParams.get('chat') || ''),
         friendlist: isEnabled(searchParams.get('friendlist') || ''),
         breakall: isEnabled(searchParams.get('breakall') || ''),
-        pausebg: !isEnabled(searchParams.get('pausebg') || ''),
+        pausebg: isEnabled(searchParams.get('pausebg') || '', true),
     }
 
     useEffect(() => {
@@ -98,7 +105,7 @@ export const App = () => {
                         initWebsocketHooks()
                     }
                 } catch (e) {
-                    console.log('Error caught:', e)
+                    console.error('Error caught:', e)
                 }
             }, 1000)
 
