@@ -71,15 +71,27 @@ body.fix_friendlist {
 body.fix_chat {
     /* Hide player icon in chat message */
     .chatArea > .Player-Chat-Message {
-        height: 16px !important;
-        margin-top: 4px !important;
+        margin-top: 0px !important;
+        margin-left: 0px !important;
+    }
+
+    .chatArea > .Player-Chat-MultiMessage {
+        margin-left: 0px !important;
     }
 
     .chatArea > .Player-Chat-Message .Player-Icon-Wrapper {
         display: none !important;
     }
 
-    .chatArea > .Player-Chat-Message .PlayerTag div span {
+    .chatArea > .Player-Chat-MultiMessage .UserPortraitSpacer {
+        min-width: 0px !important;
+    }
+
+    .chatArea > .Player-Chat-Message .PlayerTag {
+        margin-top: 0px !important;
+    }
+
+    .chatArea > .Player-Chat-Message .PlayerTag div div {
         display: inline-block;
     }
 
@@ -88,8 +100,7 @@ body.fix_chat {
         margin-left: 4px;
     }
 
-    .chatArea > .chatMessage {
-        margin-top: 4px !important;
-        margin-bottom: 0px !important;
+    .chatArea .chatMessage {
+        margin-top: 0px !important;
     }
 }
