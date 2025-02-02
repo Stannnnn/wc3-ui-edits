@@ -77,30 +77,11 @@ export const App = () => {
             document.querySelector('video')?.pause()
         }
 
-        // Override defaults so we can add our hooks
-        const sockets: WebSocket[] = window.sockets || []
-
-        // For debugging
-        window.sockets = sockets
-
-        {
-            const originalSend = WebSocket.prototype.send
-            WebSocket.prototype.send = function (...args) {
-                // Ignore Vite and Chii
-                if (this.url.includes(':5173') || this.url.includes(':8080')) {
-                    return originalSend.call(this, ...args)
-                }
-
-                if (sockets.indexOf(this) === -1) sockets.push(this)
-                return originalSend.call(this, ...args)
-            }
-        }
-
         // Setup websocket hooks
         {
             let a = setInterval(() => {
                 try {
-                    if (sockets.length > 0) {
+                    if (window.sockets.length > 0) {
                         clearInterval(a)
                         initWebsocketHooks()
                     }
@@ -118,7 +99,7 @@ export const App = () => {
                     friendGameActivityState[friend.battleTag] = currentGame?.value
 
                     if (fixesEnabled.friends) {
-                        sockets[0].onmessage?.({
+                        window.sockets[0].onmessage?.({
                             data: JSON.stringify({
                                 messageType: 'ChatMessage',
                                 payload: {
@@ -137,8 +118,8 @@ export const App = () => {
             }
 
             const initWebsocketHooks = () => {
-                const orig: any = sockets[0].onmessage
-                sockets[0].onmessage = async (...args) => {
+                const orig: any = window.sockets[0].onmessage
+                window.sockets[0].onmessage = async (...args) => {
                     orig?.(...args)
 
                     let e = JSON.parse(args?.[0]?.data)
