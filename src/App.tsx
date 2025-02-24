@@ -77,9 +77,12 @@ export const App = () => {
             document.querySelector('video')?.pause()
         }
 
+        let a: number
+        let orig: any
+
         // Setup websocket hooks
         {
-            let a = setInterval(() => {
+            a = setInterval(() => {
                 try {
                     if (window.sockets.length > 0) {
                         clearInterval(a)
@@ -118,7 +121,8 @@ export const App = () => {
             }
 
             const initWebsocketHooks = () => {
-                const orig: any = window.sockets[0].onmessage
+                orig = window.sockets[0].onmessage
+
                 window.sockets[0].onmessage = async (...args) => {
                     orig?.(...args)
 
@@ -151,6 +155,9 @@ export const App = () => {
             if (videoDiv?.paused) {
                 videoDiv.play()
             }
+
+            a && clearInterval(a)
+            orig && (window.sockets[0].onmessage = orig)
         }
     }, [fixesEnabled])
 
