@@ -22,8 +22,8 @@ with:
 
 ```
 <div id="root-edits"></div>
-<script src="https://w3replayers.com/wc3-ui-edits/assets/index.js"></script>
-<link rel="stylesheet" href="https://w3replayers.com/wc3-ui-edits/assets/index.css" />
+<script src="https://stannnnn.github.io/wc3-ui-edits/assets/index.js"></script>
+<link rel="stylesheet" href="https://stannnnn.github.io/wc3-ui-edits/assets/index.css" />
 <script src="GlueManager.js"></script>
 ```
 
@@ -36,7 +36,7 @@ with:
 To disable certain edits you'll have to use the url below and then change specific fixes to `false`
 
 ```
-<script src="https://w3replayers.com/wc3-ui-edits/assets/index.js?chat=true&friends=true&friendlist=true&breakall=true&pausebg=false"></script>
+<script src="https://stannnnn.github.io/wc3-ui-edits/assets/index.js?chat=true&friends=true&friendlist=true&breakall=true&pausebg=false"></script>
 ```
 
 &nbsp;

@@ -77,7 +77,7 @@ export const App = () => {
             document.querySelector('video')?.pause()
         }
 
-        let a: number
+        let a: NodeJS.Timeout
         let orig: any
 
         // Setup websocket hooks
