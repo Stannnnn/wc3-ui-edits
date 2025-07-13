@@ -48,7 +48,7 @@ export const App = () => {
         friends: isEnabled(searchParams.get('friends') || ''),
         chat: isEnabled(searchParams.get('chat') || ''),
         friendlist: isEnabled(searchParams.get('friendlist') || ''),
-        breakall: isEnabled(searchParams.get('breakall') || ''),
+        breakall: false, // isEnabled(searchParams.get('breakall') || ''),
         pausebg: isEnabled(searchParams.get('pausebg') || '', true),
     })
 
@@ -269,7 +269,7 @@ export const App = () => {
                                                             <div className="Checkbox-Label undefined">Friendlist</div>
                                                         </div>
 
-                                                        <div className="Checkbox-Container">
+                                                        {/* <div className="Checkbox-Container">
                                                             <div
                                                                 className={`Checkbox-Button-${
                                                                     fixesEnabled.breakall ? 'Checked' : 'Unchecked'
@@ -282,7 +282,7 @@ export const App = () => {
                                                                 }}
                                                             ></div>
                                                             <div className="Checkbox-Label undefined">Break All</div>
-                                                        </div>
+                                                        </div> */}
 
                                                         <div className="Checkbox-Container">
                                                             <div
